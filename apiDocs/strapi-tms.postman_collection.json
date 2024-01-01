@@ -1,0 +1,216 @@
+{
+	"info": {
+		"_postman_id": "a49872c4-7b85-4c0d-acef-c6e0ba3d7598",
+		"name": "strapi-tms",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8178616"
+	},
+	"item": [
+		{
+			"name": "Get locale namespace",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/en/test",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"en",
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get list of namespaces",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/list",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add key-value",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"key\": \"test2\",\n    \"text\": \"test22\",\n    \"locale\": \"en\",\n    \"namespace\": \"test\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/add-key-value",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"add-key-value"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete key-value",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"key\": \"test21\",\n    \"locale\": \"en\",\n    \"namespace\": \"test\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/delete-key-value",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"delete-key-value"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create namespace",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"locales\": [\"es\", \"en\", \"de\"],\n    \"namespace\": \"test2\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/create-namespace",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"create-namespace"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete locale namespace",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"locale\": \"es\",\n    \"namespace\": \"test\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/delete-locale-namespace",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"delete-locale-namespace"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete namespace",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"namespace\": \"test2\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/delete-namespace",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"delete-namespace"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Modify key-value Copy",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"key\": \"test211\",\n    \"text\": \"test22\",\n    \"locale\": \"en\",\n    \"namespace\": \"test\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/modify-key-value",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"modify-key-value"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:1337/strapi-tms",
+			"type": "string"
+		}
+	]
+}
