@@ -1,7 +1,6 @@
 const utils = require("@strapi/utils");
 const { cleanTranslationObject } = require("../utils");
-const _get = require("lodash/get");
-const _set = require("lodash/set");
+const _ = require("lodash");
 
 const { ApplicationError } = utils.errors;
 
@@ -119,18 +118,16 @@ module.exports = ({ strapi }) => ({
     return {};
   },
   /**
-   * The `addKeyValueToNamespace` function is used to add a key-value pair to a specific namespace and
+   * The `addKeyValueToNamespace` function is used to add a key-value pairs to a specific namespace and
    * locale in the `locale-namespace` collection.
-   * @param {string} key
-   * @param {string} text
    * @param {string} locale
    * @param {string} namespace
+   * @param {[string, string][]} keyValues
    */
-  async addKeyValueToNamespace(
-    key,
-    text,
+  async addKeyValuesToNamespace(
     locale,
     namespace,
+    keyValues,
     isModifiedAllowed = false
   ) {
     const data = await strapi.entityService.findMany(
@@ -147,28 +144,32 @@ module.exports = ({ strapi }) => ({
       });
     }
 
-    const alreadyExists = _get(result.translations, key) !== undefined;
+    keyValues.forEach(([key, value]) => {
+      const alreadyExists = _.get(result.translations, key) !== undefined;
 
-    if (alreadyExists && !isModifiedAllowed) {
-      throw new ApplicationError("Key already present in locale-namespace", {
-        key,
-        locale,
-        namespace,
-      });
-    }
-
-    if (!alreadyExists && isModifiedAllowed) {
-      throw new ApplicationError(
-        "Key not present in locale-namespace. Use add endpoint instead",
-        {
+      if (alreadyExists && !isModifiedAllowed) {
+        throw new ApplicationError("Key already present in locale-namespace", {
           key,
           locale,
           namespace,
-        }
-      );
-    }
+        });
+      }
 
-    const modifiedTranslations = _set(result.translations, key, text);
+      if (!alreadyExists && isModifiedAllowed) {
+        throw new ApplicationError(
+          "Key not present in locale-namespace. Use add endpoint instead",
+          {
+            key,
+            locale,
+            namespace,
+          }
+        );
+      }
+
+      _.setWith(result.translations, key, value, Object);
+    });
+
+    const modifiedTranslations = result.translations;
 
     await strapi.entityService.update(
       "plugin::strapi-tms.locale-namespace",
@@ -203,7 +204,7 @@ module.exports = ({ strapi }) => ({
       });
     }
 
-    const alreadyExists = _get(result.translations, key) !== undefined;
+    const alreadyExists = _.get(result.translations, key) !== undefined;
 
     if (!alreadyExists) {
       throw new ApplicationError("Key not present in locale-namespace", {
@@ -213,7 +214,7 @@ module.exports = ({ strapi }) => ({
       });
     }
 
-    const modifiedTranslations = _set(result.translations, key, undefined);
+    const modifiedTranslations = _.set(result.translations, key, undefined);
 
     cleanTranslationObject(modifiedTranslations);
 

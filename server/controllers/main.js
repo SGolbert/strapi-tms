@@ -10,13 +10,13 @@ module.exports = ({ strapi }) => ({
   list() {
     return strapi.plugin("strapi-tms").service("mainService").list();
   },
-  addKeyValue(ctx) {
+  addKeyValuePairs(ctx) {
     const body = JSON.parse(ctx.request.body);
 
     return strapi
       .plugin("strapi-tms")
       .service("mainService")
-      .addKeyValueToNamespace(body.key, body.text, body.locale, body.namespace);
+      .addKeyValuesToNamespace(body.locale, body.namespace, body.keyValues);
   },
   modifyKeyValue(ctx) {
     const body = JSON.parse(ctx.request.body);

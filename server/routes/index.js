@@ -19,8 +19,8 @@ module.exports = [
   },
   {
     method: "POST",
-    path: "/add-key-value",
-    handler: "mainController.addKeyValue",
+    path: "/add-key-value-pairs",
+    handler: "mainController.addKeyValuePairs",
     config: {
       policies: [],
       auth: false,
