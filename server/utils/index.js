@@ -1,3 +1,5 @@
+const _ = require("lodash");
+
 /**
  * The `cleanTranslationObject` function recursively removes undefined values and empty objects from a
  * given object.
@@ -31,6 +33,19 @@ const cleanTranslationObject = (obj) => {
   });
 };
 
+const mergeCustomizerWithoutOverwrite = (objValue, srcValue) => {
+  if (typeof objValue === "object" || typeof srcValue === "object") {
+    return undefined;
+  }
+
+  if (objValue) {
+    return objValue;
+  }
+
+  return srcValue;
+};
+
 module.exports = {
   cleanTranslationObject,
+  mergeCustomizerWithoutOverwrite,
 };

@@ -1,5 +1,8 @@
 const utils = require("@strapi/utils");
-const { cleanTranslationObject } = require("../utils");
+const {
+  cleanTranslationObject,
+  mergeCustomizerWithoutOverwrite,
+} = require("../utils");
 const _ = require("lodash");
 
 const { ApplicationError } = utils.errors;
@@ -242,5 +245,53 @@ module.exports = ({ strapi }) => ({
         return { ...acc, [entry.name]: [...acc[entry.name], entry.locale] };
       }
     }, {});
+  },
+  /**
+   * The `addJsonToNamespace` function is used to add a complete json archive to a specific namespace and
+   * locale in the `locale-namespace` collection.
+   * @param {string} locale
+   * @param {string} namespace
+   * @param {object} jsonArchive
+   * @param {boolean} isOverwriteAllowed
+   */
+  async addJsonToNamespace(
+    locale,
+    namespace,
+    jsonArchive,
+    isOverwriteAllowed = false
+  ) {
+    const data = await strapi.entityService.findMany(
+      "plugin::strapi-tms.locale-namespace"
+    );
+    const result = data.find(
+      (entry) => entry.locale === locale && entry.name === namespace
+    );
+
+    if (!result) {
+      throw new ApplicationError("locale-namespace not found", {
+        locale,
+        namespace,
+      });
+    }
+
+    const modifiedTranslations = isOverwriteAllowed
+      ? _.merge(result.translations, jsonArchive)
+      : _.mergeWith(
+          result.translations,
+          jsonArchive,
+          mergeCustomizerWithoutOverwrite
+        );
+
+    await strapi.entityService.update(
+      "plugin::strapi-tms.locale-namespace",
+      result.id,
+      {
+        data: {
+          translations: modifiedTranslations,
+        },
+      }
+    );
+
+    return {};
   },
 });
